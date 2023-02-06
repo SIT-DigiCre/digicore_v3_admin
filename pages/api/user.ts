@@ -1,7 +1,7 @@
 import { queryDb } from "@/util/db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type User = {
+export type User = {
   id: string;
   studentNumber: string;
   username: string;

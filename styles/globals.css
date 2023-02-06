@@ -4,3 +4,27 @@
   padding: 0;
   margin: 0;
 }
+
+.table-th-studentNumber{
+  width: 75px;
+}
+
+.table-th-username{
+  width: 125px;
+}
+
+.table-th-name{
+  width: 100px;
+}
+
+.table-th-name-kana{
+  width: 125px;
+}
+
+.table-th-phoneNumber{
+  width: 115px;
+}
+
+.table-th-address{
+  width: 250px;
+}
