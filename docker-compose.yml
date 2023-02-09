@@ -1,0 +1,20 @@
+version: "3"
+services:
+  admin:
+    image: ghcr.io/sit-digicre/digicore_v3_admin:master
+    restart: always
+    networks:
+      - digicoreapi
+      - adminnet
+  cf-tunnel:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    networks:
+      - adminnet
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+networks:
+  adminnet:
+  digicoreapi:
+    external: true
