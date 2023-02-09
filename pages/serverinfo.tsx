@@ -21,7 +21,7 @@ const ServerInfoPage = ({ dbMbSizes }: Props) => {
           </thead>
           <tbody>
             {dbMbSizes.map((db) => (
-              <tr>
+              <tr key={db.name}>
                 <td>{db.name}</td>
                 <td>{db.mbSize}</td>
               </tr>
