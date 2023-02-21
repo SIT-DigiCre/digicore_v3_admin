@@ -6,6 +6,8 @@ services:
     networks:
       - digicoreapi
       - adminnet
+    env_file:
+      - .env
   cf-tunnel:
     image: cloudflare/cloudflared
     restart: unless-stopped
