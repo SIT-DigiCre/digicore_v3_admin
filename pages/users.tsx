@@ -1,5 +1,6 @@
 import { queryDb } from "@/util/db";
 import { GetServerSideProps } from "next";
+import { useState } from "react";
 import { Table } from "react-bootstrap";
 import { User } from "./api/user";
 
@@ -7,16 +8,30 @@ type Props = {
   users: User[];
 };
 
+type TableDataType = "id" | "icon" | "discord";
+const allTableDataTypes: TableDataType[] = ["id", "icon", "discord"];
 const UsersPage = ({ users }: Props) => {
+  const [selectTypes, setSelectTypes] = useState<TableDataType[]>([]);
+  const onCheckFilter = (checked: boolean, type: TableDataType) => {
+    if (checked) setSelectTypes([...selectTypes, type]);
+    else setSelectTypes(selectTypes.filter(t => t !== type));
+  }
   return (
     <div style={{ width: "100%" }} className="overflow-auto">
+      {allTableDataTypes.map(t => (
+        <>
+          <input type="checkbox" key={t} onChange={(e) => { onCheckFilter(e.target.checked, t) }} />
+          {t}
+        </>
+      ))}
       <Table striped bordered hover style={{ tableLayout: "fixed" }}>
         <thead>
           <tr>
             {
               // 幅は調整中。細かい調整は後ほど。
             }
-            <th style={{ width: 150 }}>ID</th>
+            {selectTypes.indexOf("id") !== -1 ? <th style={{ width: 150 }}>ID</th> : <></>}
+
             <th className="table-th-studentNumber">学籍番号</th>
             <th className="table-th-username">ユーザー名</th>
             <th style={{ width: 30 }}>学年</th>
@@ -40,7 +55,8 @@ const UsersPage = ({ users }: Props) => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.id}</td>
+              {selectTypes.indexOf("id") !== -1 ? <td>{user.id}</td> : <></>}
+
               <td>{user.studentNumber}</td>
               <td>{user.username}</td>
               <td>{user.schoolGrade}</td>
