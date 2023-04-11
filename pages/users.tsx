@@ -8,8 +8,23 @@ type Props = {
   users: User[];
 };
 
-type TableDataType = "id" | "icon" | "discord";
-const allTableDataTypes: TableDataType[] = ["id", "icon", "discord"];
+{
+  /* あとでオブジェクトのリストに書き換えます */
+}
+type TableDataType =
+  | "学籍番号"
+  | "公開情報"
+  | "有効期限・ID"
+  | "個人情報"
+  | "保護者情報";
+
+const allTableDataTypes: TableDataType[] = [
+  "学籍番号",
+  "公開情報",
+  "有効期限・ID",
+  "個人情報",
+  "保護者情報",
+];
 const UsersPage = ({ users }: Props) => {
   const [selectTypes, setSelectTypes] = useState<TableDataType[]>([]);
   const onCheckFilter = (checked: boolean, type: TableDataType) => {
@@ -20,14 +35,21 @@ const UsersPage = ({ users }: Props) => {
     <div style={{ width: "90vw", margin: "auto" }} className="overflow-auto">
       {allTableDataTypes.map((t) => (
         <>
-          <input
-            type="checkbox"
-            key={t}
-            onChange={(e) => {
-              onCheckFilter(e.target.checked, t);
-            }}
-          />
-          {t}
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              key={t}
+              onChange={(e) => {
+                onCheckFilter(e.target.checked, t);
+              }}
+            />
+            <label className="form-check-label" htmlFor="flexCheckDefault">
+              {t}
+            </label>
+          </div>
         </>
       ))}
       <Table
@@ -39,71 +61,108 @@ const UsersPage = ({ users }: Props) => {
         <thead>
           <tr>
             {/* 幅は調整中。細かい調整は後ほど。*/}
-            {selectTypes.indexOf("id") !== -1 ? (
-              <th style={{ width: 150 }}>ID</th>
+            {selectTypes.indexOf("学籍番号") !== -1 ? (
+              <th className="table-th-studentNumber">学籍番号</th>
             ) : (
               <></>
             )}
-            <th className="table-th-studentNumber">学籍番号</th>
-            <th className="table-th-username">ユーザー名</th>
-            <th style={{ width: 30 }}>学年</th>
-            {selectTypes.indexOf("icon") !== -1 ? (
-              <th style={{ width: 66 }}>アイコン</th>
+            {selectTypes.indexOf("公開情報") !== -1 ? (
+              <>
+                <th className="table-th-username">ユーザー名</th>
+                <th style={{ width: 30 }}>学年</th>
+                <th style={{ width: 66 }}>アイコン</th>
+                <th style={{ width: 150 }}>自己紹介</th>
+              </>
             ) : (
               <></>
             )}
-            {selectTypes.indexOf("discord") !== -1 ? (
-              <th style={{ width: 100 }}>Discord ID</th>
+            {selectTypes.indexOf("有効期限・ID") !== -1 ? (
+              <>
+                <th style={{ width: 100 }}>有効期限</th>
+
+                <th style={{ width: 150 }}>ID</th>
+                <th style={{ width: 100 }}>Discord ID</th>
+              </>
             ) : (
               <></>
             )}
-            <th style={{ width: 100 }}>有効期限</th>
-            <th style={{ width: 150 }}>自己紹介</th>
-            <th className="table-th-name">名字</th>
-            <th className="table-th-name">名前</th>
-            <th className="table-th-name-kana">名字カナ</th>
-            <th className="table-th-name-kana">名前カナ</th>
-            <th style={{ width: 30 }}>性別</th>
-            <th className="table-th-phoneNumber">電話番号</th>
-            <th className="table-th-address">住所</th>
-            <th style={{ width: 100 }}>親氏名</th>
-            <th className="table-th-phoneNumber">親電話番号</th>
-            <th className="table-th-phoneNumber">親固定電話番号</th>
-            <th className="table-th-address">親住所</th>
+            {selectTypes.indexOf("個人情報") !== -1 ? (
+              <>
+                <th className="table-th-name">名字</th>
+                <th className="table-th-name">名前</th>
+                <th className="table-th-name-kana">名字カナ</th>
+                <th className="table-th-name-kana">名前カナ</th>
+                <th style={{ width: 30 }}>性別</th>
+                <th className="table-th-phoneNumber">電話番号</th>
+                <th className="table-th-address">住所</th>
+              </>
+            ) : (
+              <></>
+            )}
+            {selectTypes.indexOf("保護者情報") !== -1 ? (
+              <>
+                <th style={{ width: 100 }}>親氏名</th>
+                <th className="table-th-phoneNumber">親電話番号</th>
+                <th className="table-th-phoneNumber">親固定電話番号</th>
+                <th className="table-th-address">親住所</th>
+              </>
+            ) : (
+              <></>
+            )}
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              {selectTypes.indexOf("id") !== -1 ? <td>{user.id}</td> : <></>}
-              <td>{user.studentNumber}</td>
-              <td>{user.username}</td>
-              <td>{user.schoolGrade}</td>
-              {selectTypes.indexOf("icon") !== -1 ? (
-                <td>
-                  <img src={user.iconUrl} alt="" style={{ width: "50px" }} />
-                </td>
+              {selectTypes.indexOf("学籍番号") !== -1 ? (
+                <td>{user.studentNumber}</td>
               ) : (
                 <></>
               )}
-              {selectTypes.indexOf("discord") !== -1 ? (
-                <td>{user.discordUserId}</td>
+              {selectTypes.indexOf("公開情報") !== -1 ? (
+                <>
+                  <td>{user.username}</td>
+                  <td>{user.schoolGrade}</td>
+                  <td>
+                    <img src={user.iconUrl} alt="" style={{ width: "50px" }} />
+                  </td>
+                  <td>{user.shortIntroduction}</td>
+                </>
               ) : (
                 <></>
               )}
-              <td>{user.activeLimit}</td>
-              <td>{user.shortIntroduction}</td>
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
-              <td>{user.firstNameKana}</td>
-              <td>{user.lastNameKana}</td>
-              <td>{user.isMale ? "男" : "女"}</td>
-              <td>{user.phoneNumber}</td>
-              <td>{user.address}</td>
-              <td>{user.parentName}</td>
-              <td>{user.parentCellphoneNumber}</td>
-              <td>{user.parentHomephoneNumber}</td>
-              <td>{user.parentAddress}</td>
+              {selectTypes.indexOf("有効期限・ID") !== -1 ? (
+                <>
+                  <td>{user.activeLimit}</td>
+                  <td>{user.id}</td>
+                  <td>{user.discordUserId}</td>
+                </>
+              ) : (
+                <></>
+              )}
+              {selectTypes.indexOf("個人情報") !== -1 ? (
+                <>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.firstNameKana}</td>
+                  <td>{user.lastNameKana}</td>
+                  <td>{user.isMale ? "男" : "女"}</td>
+                  <td>{user.phoneNumber}</td>
+                  <td>{user.address}</td>
+                </>
+              ) : (
+                <></>
+              )}
+              {selectTypes.indexOf("保護者情報") !== -1 ? (
+                <>
+                  <td>{user.parentName}</td>
+                  <td>{user.parentCellphoneNumber}</td>
+                  <td>{user.parentHomephoneNumber}</td>
+                  <td>{user.parentAddress}</td>
+                </>
+              ) : (
+                <></>
+              )}
             </tr>
           ))}
         </tbody>
@@ -155,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       schoolGrade: r.school_grade,
       iconUrl: r.icon_url,
       discordUserId: r.discord_userid,
-      activeLimit: r.active_limit.toString(),
+      activeLimit: r.active_limit.toLocaleString("ja-JP"),
       shortIntroduction: r.short_introduction,
       firstName: r.first_name,
       lastName: r.last_name,
