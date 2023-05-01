@@ -94,7 +94,7 @@ const UsersPage = ({ users, error }: Props) => {
                   <>
                     <th style={{ width: "100px" }}>有効期限</th>
                     <th style={{ width: "150px" }}>ID</th>
-                    <th style={{ width: "100px" }}>Discord ID</th>
+                    <th style={{ width: "200px" }}>Discord ID</th>
                   </>
                 ) : (
                   <></>
