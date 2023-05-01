@@ -84,8 +84,8 @@ const UsersPage = ({ users, error }: Props) => {
                 <th style={{ width: "30px" }}>学年</th>
                 {selectTypes.indexOf("公開情報") !== -1 ? (
                   <>
-                    <th style={{ width: 66 }}>アイコン</th>
-                    <th style={{ width: 200 }}>自己紹介</th>
+                    <th style={{ width: "66px" }}>アイコン</th>
+                    <th style={{ width: "200px" }}>自己紹介</th>
                   </>
                 ) : (
                   <></>
