@@ -1,20 +1,12 @@
 import { queryDb } from "@/util/db";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Table from "react-bootstrap/Table";
+import { Container, Row, Form, Table } from "react-bootstrap";
 import { User } from "./api/user";
 
 type Props = {
   users: User[];
 };
-
-{
-  /* あとでオブジェクトのリストに書き換えます */
-}
 type TableDataType = "公開情報" | "有効期限・ID" | "個人情報" | "保護者情報";
 
 const allTableDataTypes: TableDataType[] = [
@@ -79,10 +71,9 @@ const UsersPage = ({ users }: Props) => {
           >
             <thead>
               <tr>
-                {/* 幅は調整中。細かい調整は後ほど。*/}
-                <th style={{ width: 82 }}>学籍番号</th>
-                <th style={{ width: 125 }}>ユーザー名</th>
-                <th style={{ width: 30 }}>学年</th>
+                <th style={{ width: "82px" }}>学籍番号</th>
+                <th style={{ width: "125px" }}>ユーザー名</th>
+                <th style={{ width: "30px" }}>学年</th>
                 {selectTypes.indexOf("公開情報") !== -1 ? (
                   <>
                     <th style={{ width: 66 }}>アイコン</th>
@@ -93,9 +84,9 @@ const UsersPage = ({ users }: Props) => {
                 )}
                 {selectTypes.indexOf("有効期限・ID") !== -1 ? (
                   <>
-                    <th style={{ width: 100 }}>有効期限</th>
-                    <th style={{ width: 150 }}>ID</th>
-                    <th style={{ width: 100 }}>Discord ID</th>
+                    <th style={{ width: "100px" }}>有効期限</th>
+                    <th style={{ width: "150px" }}>ID</th>
+                    <th style={{ width: "100px" }}>Discord ID</th>
                   </>
                 ) : (
                   <></>
@@ -106,7 +97,7 @@ const UsersPage = ({ users }: Props) => {
                     <th style={kanjiNameStyle}>名前</th>
                     <th style={kanaNameStyle}>名字カナ</th>
                     <th style={kanaNameStyle}>名前カナ</th>
-                    <th style={{ width: 30 }}>性別</th>
+                    <th style={{ width: "30px" }}>性別</th>
                     <th style={phoneNumberStyle}>電話番号</th>
                     <th style={addressStyle}>住所</th>
                   </>
@@ -115,7 +106,7 @@ const UsersPage = ({ users }: Props) => {
                 )}
                 {selectTypes.indexOf("保護者情報") !== -1 ? (
                   <>
-                    <th style={{ width: 100 }}>親氏名</th>
+                    <th style={{ width: "100px" }}>親氏名</th>
                     <th style={phoneNumberStyle}>親電話番号</th>
                     <th style={phoneNumberStyle}>親固定電話番号</th>
                     <th style={addressStyle}>親住所</th>
