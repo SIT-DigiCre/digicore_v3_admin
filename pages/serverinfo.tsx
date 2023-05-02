@@ -5,9 +5,18 @@ import { Container, Row, Table } from "react-bootstrap";
 type Props = {
   dbMbSizes: { name: string; mbSize: number }[];
   storageMbSize: number;
+  error?: string;
 };
 
-const ServerInfoPage = ({ dbMbSizes }: Props) => {
+const ServerInfoPage = ({ dbMbSizes, error }: Props) => {
+  if (error)
+    return (
+      <Container>
+        <Row>
+          <p style={{ color: "red" }}>{error}</p>
+        </Row>
+      </Container>
+    );
   return (
     <Container>
       <Row>
@@ -36,7 +45,8 @@ const ServerInfoPage = ({ dbMbSizes }: Props) => {
 export default ServerInfoPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const rows = await queryDb(`SELECT
+  try {
+    const rows = await queryDb(`SELECT
   table_schema, sum(data_length+index_length) /1024 /1024 AS MB
 FROM
   information_schema.tables
@@ -44,16 +54,23 @@ GROUP BY
   table_schema
 ORDER BY
   sum(data_length+index_length) DESC;`);
-  const dbMbSizes = rows.map((r) => {
-    return { name: r.TABLE_SCHEMA, mbSize: r.MB };
-  });
-  console.log(dbMbSizes);
-  const props: Props = {
-    dbMbSizes,
-    storageMbSize: 0,
-  };
+    const dbMbSizes = rows.map((r) => {
+      return { name: r.TABLE_SCHEMA, mbSize: r.MB };
+    });
+    console.log(dbMbSizes);
+    const props: Props = {
+      dbMbSizes,
+      storageMbSize: 0,
+    };
 
-  return {
-    props: props,
-  };
+    return {
+      props: props,
+    };
+  } catch (e: any) {
+    return {
+      props: {
+        error: e.message,
+      },
+    };
+  }
 };
