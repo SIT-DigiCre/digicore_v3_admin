@@ -1,8 +1,9 @@
 import { queryDb } from "@/util/db";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { Container, Row, Form, Table } from "react-bootstrap";
+import { Container, Row, Form, Table, Col } from "react-bootstrap";
 import { User } from "./api/user";
+import DownloadCSV from "@/components/users/DownloadCSV";
 
 type Props = {
   users: User[];
@@ -52,8 +53,11 @@ const UsersPage = ({ users, error }: Props) => {
       ) : (
         <></>
       )}
-      <Row>
-        <div className="p-2">
+      <Row className="p-2">
+        <Col md={3} sm={4}>
+          <DownloadCSV users={users} />
+        </Col>
+        <Col md={8} sm={8} className="pt-2">
           {allTableDataTypes.map((t) => (
             <Form.Check
               defaultChecked={defaultTableDataTypes.includes(t)}
@@ -67,7 +71,7 @@ const UsersPage = ({ users, error }: Props) => {
               }}
             />
           ))}
-        </div>
+        </Col>
       </Row>
       <Row>
         <div className="overflow-auto">
