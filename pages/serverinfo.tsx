@@ -3,43 +3,45 @@ import { GetServerSideProps } from "next";
 import { Container, Row, Table } from "react-bootstrap";
 
 type Props = {
+  error?: string;
   dbMbSizes: { name: string; mbSize: number }[];
   storageMbSize: number;
-  error?: string;
 };
 
-const ServerInfoPage = ({ dbMbSizes, error }: Props) => {
-  if (error)
+const ServerInfoPage = (props: Props) => {
+  if (props.error)
     return (
       <Container>
         <Row>
-          <p style={{ color: "red" }}>{error}</p>
+          <p style={{ color: "red" }}>{props.error}</p>
         </Row>
       </Container>
     );
-  return (
-    <Container>
-      <Row>
-        <h2>DBサイズ</h2>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>DB NAME</th>
-              <th>DB SIZE (MB)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dbMbSizes.map((db) => (
-              <tr key={db.name}>
-                <td>{db.name}</td>
-                <td>{db.mbSize}</td>
+  else {
+    return (
+      <Container>
+        <Row>
+          <h2>DBサイズ</h2>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>DB NAME</th>
+                <th>DB SIZE (MB)</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Row>
-    </Container>
-  );
+            </thead>
+            <tbody>
+              {props.dbMbSizes.map((db) => (
+                <tr key={db.name}>
+                  <td>{db.name}</td>
+                  <td>{db.mbSize}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Row>
+      </Container>
+    );
+  }
 };
 
 export default ServerInfoPage;
@@ -70,6 +72,8 @@ ORDER BY
     return {
       props: {
         error: e.message,
+        dbMbSizes: [],
+        StorageMbSize: 0,
       },
     };
   }
