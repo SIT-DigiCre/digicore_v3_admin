@@ -1,9 +1,9 @@
-FROM node:16
+FROM node:22
 
 WORKDIR /admin
 COPY package.json .
-COPY yarn.lock .
-RUN yarn install
+COPY pnpm-lock.yaml .
+RUN pnpm install
 COPY . .
-RUN yarn build
-CMD yarn start
+RUN pnpm build
+CMD pnpm start
