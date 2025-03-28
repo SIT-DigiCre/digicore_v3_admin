@@ -1,49 +1,34 @@
 import { queryDb } from "@/util/db";
 import { GetServerSideProps } from "next";
-import { Container, Row, Form, Table, Col } from "react-bootstrap";
+import { Row, Table } from "react-bootstrap";
 import { User } from "./api/user";
-import DownloadCSV from "@/components/users/DownloadCSV";
 
 type Props = {
   users: User[];
   error?: string;
 };
 
-const phoneNumberStyle = {
-  width: "115px",
-};
-
-const addressStyle = {
-  width: "200px",
-};
-
 const ListPage = ({ users, error }: Props) => {
   return (
-    <Container fluid>
-      {error ? (
+    <>
+      <h1>部員一覧</h1>
+      {error && (
         <Row>
           <p style={{ color: "red" }}>{error}</p>
         </Row>
-      ) : (
-        <></>
       )}
       <Row>
         <div className="overflow-auto">
-          <Table
-            striped
-            bordered
-            hover
-            style={{ tableLayout: "fixed", overflow: "auto" }}
-          >
+          <Table striped bordered hover>
             <thead>
               <tr>
-                <th style={{ width: "82px" }}>学籍番号</th>
-                <th style={{ width: "30px" }}>学年</th>
-                <th style={{ width: "30px" }}>性別</th>
-                <th style={{ width: "100px" }}>氏名</th>
-                <th style={phoneNumberStyle}>電話番号</th>
-                <th style={addressStyle}>緊急連絡先氏名</th>
-                <th style={phoneNumberStyle}>緊急連絡先電話番号</th>
+                <th>学籍番号</th>
+                <th>学年</th>
+                <th>性別</th>
+                <th>氏名</th>
+                <th>電話番号</th>
+                <th>緊急連絡先氏名</th>
+                <th>緊急連絡先電話番号</th>
               </tr>
             </thead>
             <tbody>
@@ -53,7 +38,7 @@ const ListPage = ({ users, error }: Props) => {
                   <td>{user.schoolGrade}</td>
                   <td>{user.isMale ? "男" : "女"}</td>
                   <td>
-                    {user.lastName}　{user.firstName}
+                    {user.firstName}　{user.lastName}
                   </td>
                   <td>{user.phoneNumber}</td>
                   <td>{user.parentName}</td>
@@ -64,7 +49,7 @@ const ListPage = ({ users, error }: Props) => {
           </Table>
         </div>
       </Row>
-    </Container>
+    </>
   );
 };
 
