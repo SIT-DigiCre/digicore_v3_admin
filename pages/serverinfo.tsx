@@ -1,6 +1,6 @@
 import { queryDb } from "@/util/db";
 import { GetServerSideProps } from "next";
-import { Container, Row, Table } from "react-bootstrap";
+import { Row, Table } from "react-bootstrap";
 
 type Props = {
   error?: string;
@@ -11,17 +11,18 @@ type Props = {
 const ServerInfoPage = (props: Props) => {
   if (props.error)
     return (
-      <Container>
+      <>
+        <h1>サーバー情報</h1>
         <Row>
           <p style={{ color: "red" }}>{props.error}</p>
         </Row>
-      </Container>
+      </>
     );
   else {
     return (
-      <Container>
+      <>
+        <h1>サーバー情報</h1>
         <Row>
-          <h2>DBサイズ</h2>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -39,7 +40,7 @@ const ServerInfoPage = (props: Props) => {
             </tbody>
           </Table>
         </Row>
-      </Container>
+      </>
     );
   }
 };
