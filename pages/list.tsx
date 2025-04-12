@@ -65,6 +65,7 @@ const ListPage = ({ users, error }: Props) => {
                 <th>電話番号</th>
                 <th>緊急連絡先氏名</th>
                 <th>緊急連絡先電話番号</th>
+                <th>編集</th>
               </tr>
             </thead>
             <tbody>
@@ -79,6 +80,9 @@ const ListPage = ({ users, error }: Props) => {
                   <td>{formatPhoneNumber(user.phoneNumber)}</td>
                   <td>{user.parentName}</td>
                   <td>{formatPhoneNumber(user.parentCellphoneNumber)}</td>
+                  <td>
+                    <a href={`/users/${user.id}`}>編集</a>
+                  </td>
                 </tr>
               ))}
             </tbody>
