@@ -1,7 +1,7 @@
 import { queryDb } from "@/util/db";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { Row, Table } from "react-bootstrap";
-import { User } from "./api/user";
+import type { User } from "./api/user";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
@@ -139,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         lastName: r.last_name,
         firstNameKana: r.first_name_kana,
         lastNameKana: r.last_name_kana,
-        isMale: r.is_male == 1 ? true : false,
+        isMale: r.is_male === 1,
         phoneNumber: r.phone_number,
         address: r.address,
         parentName: r.parent_name,
@@ -156,9 +156,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: props,
     };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {
-      props: { users: [], error: e.message },
+      props: { users: [], error: e },
     };
   }
 };
