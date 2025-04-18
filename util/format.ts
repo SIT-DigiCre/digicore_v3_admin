@@ -28,18 +28,20 @@ export const formatPhoneNumber = (phoneNumber: string): string => {
 
 export const formatParentName = (user: User): string => {
   const familyName = user.firstName;
-  // 全角スペースがあればそのまま返す
-  if (user.parentName.includes("　")) {
-    return user.parentName;
-  }
-  // 半角スペースがあれば全角スペースに変換して返す
-  if (user.parentName.includes(" ")) {
-    return user.parentName.replace(/ /g, "　");
-  }
-  // スペースがないとき、親子の姓が同じ場合は、子の姓の文字数を参考にスペースを入れる
-  const parentFamilyName = user.parentName.slice(0, familyName.length);
-  if (familyName === parentFamilyName) {
-    return `${user.firstName}　${user.parentName.slice(familyName.length)}`;
+  if (typeof user.parentName === "string") {
+    // 全角スペースがあればそのまま返す
+    if (user.parentName.includes("　")) {
+      return user.parentName;
+    }
+    // 半角スペースがあれば全角スペースに変換して返す
+    if (user.parentName.includes(" ")) {
+      return user.parentName.replace(/ /g, "　");
+    }
+    // スペースがないとき、親子の姓が同じ場合は、子の姓の文字数を参考にスペースを入れる
+    const parentFamilyName = user.parentName.slice(0, familyName.length);
+    if (familyName === parentFamilyName) {
+      return `${user.firstName}　${user.parentName.slice(familyName.length)}`;
+    }
   }
   // これ以外はそのまま返す
   return user.parentName;
