@@ -19,6 +19,15 @@ const HomePage = () => {
         </Card>
         <Card>
           <Card.Body>
+            <Card.Title>部員詳細</Card.Title>
+            <Card.Text>部員の詳細情報を確認できます。</Card.Text>
+            <Card.Link href="/users" as={Link}>
+              部員詳細
+            </Card.Link>
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <Card.Title>サーバー情報</Card.Title>
             <Card.Text>
               サーバーの稼働状況やリソース使用率を確認できます。

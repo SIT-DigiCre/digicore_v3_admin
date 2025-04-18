@@ -36,7 +36,7 @@ const EditUserPage = ({ user }: { user: User }) => {
       <h1>ユーザー情報編集</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          氏名:
+          名字
           <input
             type="text"
             name="firstName"
@@ -45,7 +45,7 @@ const EditUserPage = ({ user }: { user: User }) => {
           />
         </label>
         <label>
-          姓名:
+          名前
           <input
             type="text"
             name="lastName"
@@ -54,11 +54,29 @@ const EditUserPage = ({ user }: { user: User }) => {
           />
         </label>
         <label>
-          電話番号:
+          ユーザー名
           <input
             type="text"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          学年
+          <input
+            type="number"
+            name="schoolGrade"
+            value={formData.schoolGrade}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          保護者氏名
+          <input
+            type="text"
+            name="parentName"
+            value={formData.parentName}
             onChange={handleChange}
           />
         </label>

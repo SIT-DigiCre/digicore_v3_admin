@@ -65,6 +65,7 @@ const ListPage = ({ users, error }: Props) => {
                 <th>電話番号</th>
                 <th>緊急連絡先氏名</th>
                 <th>緊急連絡先電話番号</th>
+                <th>期限</th>
                 <th>編集</th>
               </tr>
             </thead>
@@ -78,8 +79,9 @@ const ListPage = ({ users, error }: Props) => {
                     {user.firstName}　{user.lastName}
                   </td>
                   <td>{formatPhoneNumber(user.phoneNumber)}</td>
-                  <td>{user.parentName}</td>
+                  <td>{formatParentName(user)}</td>
                   <td>{formatPhoneNumber(user.parentCellphoneNumber)}</td>
+                  <td>{dayjs(user.activeLimit).format("YYYY/MM/DD")}</td>
                   <td>
                     <a href={`/users/${user.id}`}>編集</a>
                   </td>
@@ -99,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const rows = await queryDb(
       `SELECT 
-      BIN_TO_UUID(users.id) as id, 
+      BIN_TO_UUID(users.id) as id,
       student_number, 
       username, 
       school_grade, 
@@ -180,4 +182,23 @@ function formatPhoneNumber(phoneNumber: string): string {
 
   // フォーマットに合わない場合はそのまま返す
   return phoneNumber;
+}
+
+function formatParentName(user: User): string {
+  const familyName = user.firstName;
+  // 全角スペースがあればそのまま返す
+  if (user.parentName.includes("　")) {
+    return user.parentName;
+  }
+  // 半角スペースがあれば全角スペースに変換して返す
+  if (user.parentName.includes(" ")) {
+    return user.parentName.replace(/ /g, "　");
+  }
+  // スペースがないとき、親子の姓が同じ場合は、子の姓の文字数を参考にスペースを入れる
+  const parentFamilyName = user.parentName.slice(0, familyName.length);
+  if (familyName === parentFamilyName) {
+    return `${user.firstName}　${user.parentName.slice(familyName.length)}`;
+  }
+  // これ以外はそのまま返す
+  return user.parentName;
 }
