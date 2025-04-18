@@ -4,21 +4,11 @@ import { Row, Table } from "react-bootstrap";
 import type { User } from "./api/user";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { formatParentName, formatPhoneNumber, gradeMap } from "@/util/format";
 
 type Props = {
   users: User[];
   error?: string;
-};
-
-const gradeMap: Record<number, string> = {
-  1: "1年",
-  2: "2年",
-  3: "3年",
-  4: "4年",
-  5: "修1",
-  6: "修2",
-  7: "博1",
-  8: "博2",
 };
 
 const ListPage = ({ users, error }: Props) => {
@@ -65,7 +55,6 @@ const ListPage = ({ users, error }: Props) => {
                 <th>電話番号</th>
                 <th>緊急連絡先氏名</th>
                 <th>緊急連絡先電話番号</th>
-                <th>期限</th>
                 <th>編集</th>
               </tr>
             </thead>
@@ -81,7 +70,6 @@ const ListPage = ({ users, error }: Props) => {
                   <td>{formatPhoneNumber(user.phoneNumber)}</td>
                   <td>{formatParentName(user)}</td>
                   <td>{formatPhoneNumber(user.parentCellphoneNumber)}</td>
-                  <td>{dayjs(user.activeLimit).format("YYYY/MM/DD")}</td>
                   <td>
                     <a href={`/users/${user.id}`}>編集</a>
                   </td>
@@ -168,37 +156,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
-
-function formatPhoneNumber(phoneNumber: string): string {
-  // 日本の携帯電話番号 (090, 080, 070 から始まる11桁) の場合
-  if (/^(090|080|070)\d{8}$/.test(phoneNumber)) {
-    return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
-  }
-
-  // 固定電話番号 (市外局番が1~4桁、7~8桁の番号) の場合
-  if (/^(0\d{1,4})(\d{1,4})(\d{4})$/.test(phoneNumber)) {
-    return phoneNumber.replace(/^(0\d{1,4})(\d{1,4})(\d{4})$/, "$1-$2-$3");
-  }
-
-  // フォーマットに合わない場合はそのまま返す
-  return phoneNumber;
-}
-
-function formatParentName(user: User): string {
-  const familyName = user.firstName;
-  // 全角スペースがあればそのまま返す
-  if (user.parentName.includes("　")) {
-    return user.parentName;
-  }
-  // 半角スペースがあれば全角スペースに変換して返す
-  if (user.parentName.includes(" ")) {
-    return user.parentName.replace(/ /g, "　");
-  }
-  // スペースがないとき、親子の姓が同じ場合は、子の姓の文字数を参考にスペースを入れる
-  const parentFamilyName = user.parentName.slice(0, familyName.length);
-  if (familyName === parentFamilyName) {
-    return `${user.firstName}　${user.parentName.slice(familyName.length)}`;
-  }
-  // これ以外はそのまま返す
-  return user.parentName;
-}
