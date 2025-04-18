@@ -1,5 +1,4 @@
 import mysql from "mysql2";
-import { resolve } from "path";
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -9,7 +8,7 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => {
   if (err) {
-    console.log("error connecting: " + err.stack);
+    console.log(`error connecting: ${err.stack}`);
     return;
   }
   console.log("success");

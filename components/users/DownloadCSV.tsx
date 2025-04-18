@@ -1,4 +1,4 @@
-import { User } from "@/pages/api/user";
+import type { User } from "@/pages/api/user";
 import { Button } from "react-bootstrap";
 import { saveAs } from "file-saver";
 
@@ -12,16 +12,16 @@ const DownloadCSV = ({ users }: Props) => {
         users
           .map((u, i) => {
             let line = "";
-            if (i == 0) {
+            if (i === 0) {
               for (const key in u) {
-                line += key + ",";
+                line += `${key},`;
               }
               line = line.slice(0, -1);
               line += "\n";
             }
-            const u2 = u as any;
+            const u2 = u;
             for (const key in u2) {
-              line += u2[key] + ",";
+              line += `${u2[key as keyof User]},`;
             }
             line = line.slice(0, -1);
             return line;
@@ -36,7 +36,7 @@ const DownloadCSV = ({ users }: Props) => {
   };
   return (
     <>
-      <Button onClick={onClickDownload} disabled={users.length == 0}>
+      <Button onClick={onClickDownload} disabled={users.length === 0}>
         CSVをダウンロード
       </Button>
     </>

@@ -27,6 +27,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method === "PUT") {
+    const { id, firstName, lastName, phoneNumber } = req.body;
+
+    try {
+      await queryDb(
+        `UPDATE users SET first_name = ${firstName}, last_name = ${lastName}, phone_number = ${phoneNumber} WHERE id = ${id}`
+      );
+      res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update user" });
+    }
+    return;
+  }
+
   const rows = await queryDb(
     `SELECT 
     BIN_TO_UUID(users.id) as id, 
@@ -73,7 +87,7 @@ export default async function handler(
       lastName: r.last_name,
       firstNameKana: r.first_name_kana,
       lastNameKana: r.last_name_kana,
-      isMale: r.is_male == 1 ? true : false,
+      isMale: r.is_male === 1,
       phoneNumber: r.phone_number,
       address: r.address,
       parentName: r.parent_name,

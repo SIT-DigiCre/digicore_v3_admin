@@ -46,12 +46,10 @@ const UsersPage = ({ users, error }: Props) => {
   };
   return (
     <Container fluid>
-      {error ? (
+      {error && (
         <Row>
           <p style={{ color: "red" }}>{error}</p>
         </Row>
-      ) : (
-        <></>
       )}
       <Row className="p-2">
         <Col md={3} sm={4}>
@@ -86,24 +84,20 @@ const UsersPage = ({ users, error }: Props) => {
                 <th style={{ width: "82px" }}>学籍番号</th>
                 <th style={{ width: "125px" }}>ユーザー名</th>
                 <th style={{ width: "30px" }}>学年</th>
-                {selectTypes.indexOf("公開情報") !== -1 ? (
+                {selectTypes.indexOf("公開情報") !== -1 && (
                   <>
                     <th style={{ width: "66px" }}>アイコン</th>
                     <th style={{ width: "200px" }}>自己紹介</th>
                   </>
-                ) : (
-                  <></>
                 )}
-                {selectTypes.indexOf("有効期限・ID") !== -1 ? (
+                {selectTypes.indexOf("有効期限・ID") !== -1 && (
                   <>
                     <th style={{ width: "100px" }}>有効期限</th>
                     <th style={{ width: "150px" }}>ID</th>
                     <th style={{ width: "200px" }}>Discord ID</th>
                   </>
-                ) : (
-                  <></>
                 )}
-                {selectTypes.indexOf("個人情報") !== -1 ? (
+                {selectTypes.indexOf("個人情報") !== -1 && (
                   <>
                     <th style={kanjiNameStyle}>名字</th>
                     <th style={kanjiNameStyle}>名前</th>
@@ -113,18 +107,14 @@ const UsersPage = ({ users, error }: Props) => {
                     <th style={phoneNumberStyle}>電話番号</th>
                     <th style={addressStyle}>住所</th>
                   </>
-                ) : (
-                  <></>
                 )}
-                {selectTypes.indexOf("保護者情報") !== -1 ? (
+                {selectTypes.indexOf("保護者情報") !== -1 && (
                   <>
                     <th style={{ width: "100px" }}>親氏名</th>
                     <th style={phoneNumberStyle}>親電話番号</th>
                     <th style={phoneNumberStyle}>親固定電話番号</th>
                     <th style={addressStyle}>親住所</th>
                   </>
-                ) : (
-                  <></>
                 )}
               </tr>
             </thead>
@@ -134,7 +124,7 @@ const UsersPage = ({ users, error }: Props) => {
                   <td>{user.studentNumber}</td>
                   <td>{user.username}</td>
                   <td>{user.schoolGrade}</td>
-                  {selectTypes.indexOf("公開情報") !== -1 ? (
+                  {selectTypes.indexOf("公開情報") !== -1 && (
                     <>
                       <td>
                         <img
@@ -145,19 +135,15 @@ const UsersPage = ({ users, error }: Props) => {
                       </td>
                       <td>{user.shortIntroduction}</td>
                     </>
-                  ) : (
-                    <></>
                   )}
-                  {selectTypes.indexOf("有効期限・ID") !== -1 ? (
+                  {selectTypes.indexOf("有効期限・ID") !== -1 && (
                     <>
                       <td>{user.activeLimit}</td>
                       <td>{user.id}</td>
                       <td>{user.discordUserId}</td>
                     </>
-                  ) : (
-                    <></>
                   )}
-                  {selectTypes.indexOf("個人情報") !== -1 ? (
+                  {selectTypes.indexOf("個人情報") !== -1 && (
                     <>
                       <td>{user.firstName}</td>
                       <td>{user.lastName}</td>
@@ -167,18 +153,14 @@ const UsersPage = ({ users, error }: Props) => {
                       <td>{user.phoneNumber}</td>
                       <td>{user.address}</td>
                     </>
-                  ) : (
-                    <></>
                   )}
-                  {selectTypes.indexOf("保護者情報") !== -1 ? (
+                  {selectTypes.indexOf("保護者情報") !== -1 && (
                     <>
                       <td>{user.parentName}</td>
                       <td>{user.parentCellphoneNumber}</td>
                       <td>{user.parentHomephoneNumber}</td>
                       <td>{user.parentAddress}</td>
                     </>
-                  ) : (
-                    <></>
                   )}
                 </tr>
               ))}

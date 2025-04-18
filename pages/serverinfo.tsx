@@ -1,5 +1,5 @@
 import { queryDb } from "@/util/db";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { Row, Table } from "react-bootstrap";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const ServerInfoPage = (props: Props) => {
-  if (props.error)
+  if (props.error) {
     return (
       <>
         <h1>サーバー情報</h1>
@@ -18,7 +18,8 @@ const ServerInfoPage = (props: Props) => {
         </Row>
       </>
     );
-  else {
+    // biome-ignore lint/style/noUselessElse: <explanation>
+  } else {
     return (
       <>
         <h1>サーバー情報</h1>
@@ -69,10 +70,10 @@ ORDER BY
     return {
       props: props,
     };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {
       props: {
-        error: e.message,
+        error: e,
         dbMbSizes: [],
         StorageMbSize: 0,
       },

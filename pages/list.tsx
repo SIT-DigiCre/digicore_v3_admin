@@ -1,24 +1,14 @@
 import { queryDb } from "@/util/db";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { Row, Table } from "react-bootstrap";
-import { User } from "./api/user";
+import type { User } from "./api/user";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { formatParentName, formatPhoneNumber, gradeMap } from "@/util/format";
 
 type Props = {
   users: User[];
   error?: string;
-};
-
-const gradeMap: Record<number, string> = {
-  1: "1年",
-  2: "2年",
-  3: "3年",
-  4: "4年",
-  5: "修1",
-  6: "修2",
-  7: "博1",
-  8: "博2",
 };
 
 const ListPage = ({ users, error }: Props) => {
@@ -65,6 +55,7 @@ const ListPage = ({ users, error }: Props) => {
                 <th>電話番号</th>
                 <th>緊急連絡先氏名</th>
                 <th>緊急連絡先電話番号</th>
+                <th>編集</th>
               </tr>
             </thead>
             <tbody>
@@ -77,8 +68,11 @@ const ListPage = ({ users, error }: Props) => {
                     {user.firstName}　{user.lastName}
                   </td>
                   <td>{formatPhoneNumber(user.phoneNumber)}</td>
-                  <td>{user.parentName}</td>
+                  <td>{formatParentName(user)}</td>
                   <td>{formatPhoneNumber(user.parentCellphoneNumber)}</td>
+                  <td>
+                    <a href={`/users/${user.id}`}>編集</a>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -95,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const rows = await queryDb(
       `SELECT 
-      BIN_TO_UUID(users.id) as id, 
+      BIN_TO_UUID(users.id) as id,
       student_number, 
       username, 
       school_grade, 
@@ -139,7 +133,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         lastName: r.last_name,
         firstNameKana: r.first_name_kana,
         lastNameKana: r.last_name_kana,
-        isMale: r.is_male == 1 ? true : false,
+        isMale: r.is_male === 1,
         phoneNumber: r.phone_number,
         address: r.address,
         parentName: r.parent_name,
@@ -156,24 +150,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: props,
     };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {
-      props: { users: [], error: e.message },
+      props: { users: [], error: e },
     };
   }
 };
-
-function formatPhoneNumber(phoneNumber: string): string {
-  // 日本の携帯電話番号 (090, 080, 070 から始まる11桁) の場合
-  if (/^(090|080|070)\d{8}$/.test(phoneNumber)) {
-    return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
-  }
-
-  // 固定電話番号 (市外局番が1~4桁、7~8桁の番号) の場合
-  if (/^(0\d{1,4})(\d{1,4})(\d{4})$/.test(phoneNumber)) {
-    return phoneNumber.replace(/^(0\d{1,4})(\d{1,4})(\d{4})$/, "$1-$2-$3");
-  }
-
-  // フォーマットに合わない場合はそのまま返す
-  return phoneNumber;
-}
